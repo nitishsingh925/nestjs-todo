@@ -16,7 +16,7 @@ async function bootstrap() {
         type: 'http',
         scheme: 'bearer',
         bearerFormat: 'JWT',
-        name: 'AbhiOrder',
+        name: 'Todo',
         description: 'Enter JWT Token (accessToken)',
       },
       'accessToken',
