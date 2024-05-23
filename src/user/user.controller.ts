@@ -7,6 +7,9 @@ import {
   Param,
   Delete,
   UseGuards,
+  Request,
+  Response,
+  ConflictException,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -35,8 +38,19 @@ export class UserController {
   })
   @ApiResponse({ status: 400, description: 'Bad Request.' })
   @Post()
-  create(@Body() createUserDto: CreateUserDto) {
-    return this.userService.create(createUserDto);
+  async create(
+    @Request() request,
+    @Response() response,
+    @Body() createUserDto: CreateUserDto,
+  ) {
+    const userEmail = request.body.email;
+
+    const existingUser = await this.userService.findUserByEmail(userEmail);
+
+    if (existingUser) throw new ConflictException('User already exists.');
+
+    const newUser = await this.userService.create(createUserDto);
+    return response.status(201).send(newUser);
   }
 
   @UseGuards(AuthGuard)
