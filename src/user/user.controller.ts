@@ -23,8 +23,6 @@ import { AuthGuard } from 'src/auth/auth.guard';
 
 @ApiTags('user')
 @Controller('user')
-@UseGuards(AuthGuard)
-@ApiSecurity('accessToken')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
@@ -41,6 +39,8 @@ export class UserController {
     return this.userService.create(createUserDto);
   }
 
+  @UseGuards(AuthGuard)
+  @ApiSecurity('accessToken')
   @ApiOperation({ summary: 'Get all users' })
   @ApiResponse({
     status: 200,
@@ -52,6 +52,8 @@ export class UserController {
     return this.userService.findAll();
   }
 
+  @UseGuards(AuthGuard)
+  @ApiSecurity('accessToken')
   @ApiOperation({ summary: 'Get a user by ID' })
   @ApiParam({ name: 'id', description: 'User ID' }) // Describing the URL parameter
   @ApiResponse({
@@ -65,6 +67,8 @@ export class UserController {
     return this.userService.findOne(+id);
   }
 
+  @UseGuards(AuthGuard)
+  @ApiSecurity('accessToken')
   @ApiOperation({ summary: 'Update a user by ID' })
   @ApiParam({ name: 'id', description: 'User ID' })
   @ApiBody({ type: UpdateUserDto })
@@ -79,6 +83,8 @@ export class UserController {
     return this.userService.update(+id, updateUserDto);
   }
 
+  @UseGuards(AuthGuard)
+  @ApiSecurity('accessToken')
   @ApiOperation({ summary: 'Delete a user by ID' })
   @ApiParam({ name: 'id', description: 'User ID' })
   @ApiResponse({
